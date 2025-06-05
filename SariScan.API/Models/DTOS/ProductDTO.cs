@@ -2,9 +2,9 @@ namespace SariScan.API.Models.DTOS
 {
     public class ProductDTO
     {
-        public string Barcode { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public string Category { get; set; }
+        public required string Barcode { get; set; }
+        public required string Name { get; set; }
+        public required decimal Price { get; set; }
+        public required string Category { get; set; }
     }
 }

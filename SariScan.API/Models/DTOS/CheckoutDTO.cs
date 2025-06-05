@@ -1,8 +1,8 @@
-namespace SariScan.API.Models
+namespace SariScan.API.Models.DTOS
 {
     public class CheckoutDTO
     {
-        public string Barcode { get; set; }
-        public int Quantity { get; set; }
+        public required string barcode { get; set; }
+        public required int quantity { get; set; }
     }
 }
