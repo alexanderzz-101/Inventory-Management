@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Barcode Scanner</title>
+
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 1rem;
+      background-color: #f0f0f0;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: green;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Sari-Scan</h2>
+  <div id="reader"></div>
+  <div id="result">Scan a barcode to see the result here.</div>
+  <button onclick="stopScanner()">Stop Scanner</button>
+
+  <script>
+    const resultContainer = document.getElementById('result');
+    const html5QrCode = new Html5Qrcode("reader");
+
+    function startScanner() {
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 100 },
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.EAN_13,
+          Html5QrcodeSupportedFormats.UPC_A,
+          Html5QrcodeSupportedFormats.UPC_E
+        ]
+      };
+
+      html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        decodedText => {
+          resultContainer.innerText = `Scanned: ${decodedText}`;
+          html5QrCode.stop();
+        },
+        error => {
+          // Optionally log error
+        }
+      ).catch(err => {
+        resultContainer.innerText = `Error: ${err}`;
+      });
+    }
+
+    function stopScanner() {
+      html5QrCode.stop().then(() => {
+        resultContainer.innerText = "Scanner stopped.";
+      }).catch(err => {
+        resultContainer.innerText = `Stop error: ${err}`;
+      });
+    }
+
+    // Start scanner on page load
+    window.onload = startScanner;
+  </script>
+
+</body>
+</html>
